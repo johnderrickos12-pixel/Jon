@@ -1,84 +1,43 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const videoForm = document.getElementById('videoForm');
-    const apiKeyInput = document.getElementById('apiKey');
-    const promptInput = document.getElementById('prompt');
-    const generateBtn = document.getElementById('generateBtn');
-    const loadingSpinner = document.getElementById('loadingSpinner');
-    const videoContainer = document.getElementById('videoContainer');
+document.getElementById('generate-btn').addEventListener('click', async () => {
+    const prompt = document.getElementById('prompt-input').value;
+    const apiKey = document.getElementById('api-key-input').value; // Still needed to pass to the backend
+    const resultDiv = document.getElementById('result-container');
+    const loadingSpinner = document.getElementById('loading-spinner');
 
-    // Use the hardcoded API key provided by the user
-    const hardcodedApiKey = 'AIzaSyAC0P-NExutRiIQbQPkcbSwZCdz-C8SPEI';
-    apiKeyInput.value = hardcodedApiKey;
+    if (!prompt || !apiKey) {
+        resultDiv.innerHTML = `<p class="text-red-400">Please enter a prompt and your API key.</p>`;
+        return;
+    }
 
-    videoForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
+    // Show loading spinner and clear previous result
+    loadingSpinner.classList.remove('hidden');
+    resultDiv.innerHTML = '';
 
-        const apiKey = apiKeyInput.value.trim();
-        const prompt = promptInput.value.trim();
+    try {
+        const response = await fetch('http://localhost:3000/generate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ prompt: prompt, apiKey: apiKey }),
+        });
 
-        if (!apiKey || !prompt) {
-            alert('Please ensure both API Key and Prompt are filled out.');
-            return;
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Something went wrong on the server.');
         }
 
-        // Show loading spinner and disable button
-        generateBtn.disabled = true;
-        generateBtn.innerHTML = 'Generating...';
-        loadingSpinner.style.display = 'block';
-        videoContainer.innerHTML = ''; // Clear previous results
+        const data = await response.json();
+        
+        // The Gemini API returns markdown. We'll display it raw or you can use a library to render it.
+        // For simplicity, we'll format it a bit.
+        const formattedText = data.text.replace(/\n/g, '<br>');
+        resultDiv.innerHTML = `<p>${formattedText}</p>`;
 
-        try {
-            // NOTE: The Gemini API for video generation is not publicly available as of this implementation.
-            // This is a placeholder for the actual API endpoint and request structure.
-            // You would need to replace 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent'
-            // with the correct video generation model endpoint when it becomes available.
-            
-            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`;
-
-            const response = await fetch(API_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    contents: [{
-                        parts: [{
-                            text: `Generate a video based on the following prompt: ${prompt}`
-                        }]
-                    }]
-                })
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error.message || 'An unknown error occurred.');
-            }
-
-            const data = await response.json();
-
-            // Placeholder for handling the video data.
-            // The actual response structure for video will be different.
-            // You would typically get a video URL or video data to embed.
-            const videoUrl = data.candidates[0].content.parts[0].text; // This is a placeholder assumption
-
-            const videoElement = document.createElement('video');
-            videoElement.src = videoUrl; // Assuming the API returns a direct link to a video file
-            videoElement.controls = true;
-            videoElement.autoplay = true;
-            videoElement.muted = true; // Muted autoplay is usually allowed by browsers
-            videoElement.style.width = '100%';
-            videoElement.style.borderRadius = '8px';
-            
-            videoContainer.appendChild(videoElement);
-
-        } catch (error) {
-            console.error('Error:', error);
-            videoContainer.innerHTML = `<p class="error">Failed to generate video. Error: ${error.message}. Please check the console for more details.</p>`;
-        } finally {
-            // Hide loading spinner and re-enable button
-            generateBtn.disabled = false;
-            generateBtn.innerHTML = 'Generate Video';
-            loadingSpinner.style.display = 'none';
-        }
-    });
+    } catch (error) {
+        resultDiv.innerHTML = `<p class="text-red-400">Error: ${error.message}</p>`;
+    } finally {
+        // Hide loading spinner
+        loadingSpinner.classList.add('hidden');
+    }
 });
