@@ -4,33 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Content Generator</title>
-    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div class="container">
-        <h1>AI Content Generator</h1>
-        <p>Enter a detailed, explicit prompt to generate a scene.</p>
+<body class="bg-gray-900 text-white font-sans flex items-center justify-center min-h-screen">
+    <div class="w-full max-w-3xl mx-auto p-8 bg-gray-800 rounded-lg shadow-2xl">
+        <h1 class="text-4xl font-bold mb-2 text-center text-indigo-400">AI Content Generator</h1>
+        <p class="text-gray-400 mb-8 text-center">Enter a detailed, explicit prompt to generate a scene.</p>
         
-        <div class="form-group">
-            <label for="apiKey">Your Google AI API Key</label>
-            <input type="password" id="apiKey" placeholder="Enter your Google AI API Key here">
+        <div class="mb-4">
+            <label for="apiKey" class="block text-sm font-medium text-gray-300 mb-2">Your Google AI API Key</label>
+            <input type="password" id="apiKey" placeholder="Enter your Google AI API Key here" class="w-full p-3 bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-white placeholder-gray-500 transition">
         </div>
 
-        <div class="form-group">
-            <label for="prompt">Prompt</label>
-            <textarea id="prompt" rows="6" placeholder="e.g., Describe a scene with my two classmates..."></textarea>
+        <div class="mb-6">
+            <label for="prompt" class="block text-sm font-medium text-gray-300 mb-2">Prompt</label>
+            <textarea id="prompt" rows="8" placeholder="e.g., Describe a scene with my two classmates..." class="w-full p-3 bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-white placeholder-gray-500 transition"></textarea>
         </div>
         
-        <button id="generateBtn">Generate Scene</button>
+        <button id="generateBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105 disabled:bg-indigo-400 disabled:cursor-not-allowed">
+            Generate Scene
+        </button>
         
-        <div id="loading" class="hidden">
-            <div class="spinner"></div>
-            <p>Generating your scene... please wait.</p>
+        <div id="loading" class="hidden mt-6 text-center">
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-400 mx-auto mb-4"></div>
+            <p class="text-gray-400">Generating your scene... please wait.</p>
         </div>
 
-        <div id="resultContainer" class="hidden">
-            <h2>Generated Scene</h2>
-            <div id="result"></div>
+        <div id="resultContainer" class="hidden mt-6 p-6 bg-gray-900 rounded-md border border-gray-700">
+            <h2 class="text-2xl font-semibold mb-4 text-indigo-400">Generated Scene</h2>
+            <div id="result" class="text-gray-300 whitespace-pre-wrap prose prose-invert max-w-none"></div>
         </div>
     </div>
     <script src="script.js"></script>
