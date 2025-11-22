@@ -1,0 +1,16 @@
+{
+  "name": "gemini-video-generator-backend",
+  "version": "1.0.0",
+  "description": "Backend server to securely call the Gemini API.",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "@google/generative-ai": "^0.2.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5"
+  }
+}
