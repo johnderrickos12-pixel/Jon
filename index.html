@@ -3,42 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Video Generator</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>AI Content Generator</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen font-sans">
-
-    <div class="w-full max-w-2xl bg-gray-800 rounded-lg shadow-xl p-8">
-        <h1 class="text-4xl font-bold mb-6 text-center text-purple-400">AI Video Generator</h1>
+<body>
+    <div class="container">
+        <h1>AI Content Generator</h1>
+        <p>Enter a detailed, explicit prompt to generate a scene.</p>
         
-        <div class="mb-4">
-            <label for="apiKey" class="block text-sm font-medium text-gray-400 mb-2">Your Gemini API Key</label>
-            <input type="password" id="apiKey" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-purple-500" value="AIzaSyAC0P-NExutRiIQbQPkcbSwZCdz-C8SPEI">
+        <div class="form-group">
+            <label for="apiKey">Your Google AI API Key</label>
+            <input type="password" id="apiKey" placeholder="Enter your Google AI API Key here">
         </div>
 
-        <div class="mb-6">
-            <label for="prompt" class="block text-sm font-medium text-gray-400 mb-2">Prompt</label>
-            <textarea id="prompt" rows="4" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="e.g., Two classmates, one with blonde hair and one with black hair, having fun..."></textarea>
+        <div class="form-group">
+            <label for="prompt">Prompt</label>
+            <textarea id="prompt" rows="6" placeholder="e.g., Describe a scene with my two classmates..."></textarea>
+        </div>
+        
+        <button id="generateBtn">Generate Scene</button>
+        
+        <div id="loading" class="hidden">
+            <div class="spinner"></div>
+            <p>Generating your scene... please wait.</p>
         </div>
 
-        <button id="generateBtn" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
-            Generate Video
-        </button>
-
-        <div id="videoContainer" class="mt-8 w-full bg-gray-700 rounded-lg hidden flex items-center justify-center aspect-video">
-            <div id="loading" class="hidden">
-                <svg class="animate-spin h-10 w-10 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                <p class="mt-2 text-gray-400">Generating, please wait...</p>
-            </div>
-            <video id="resultVideo" class="w-full h-full rounded-lg hidden" controls></video>
-            <p id="errorMessage" class="text-red-400 hidden"></p>
+        <div id="resultContainer" class="hidden">
+            <h2>Generated Scene</h2>
+            <div id="result"></div>
         </div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
